@@ -1,15 +1,14 @@
+# Модифікації (на вибір):
+# 1. Зберігати позначку про зроблений раніше виклик
+#    оригінальної функції окремо від результату, який вона повертала
+# 2. Реалізувати механізм кешування для функції, аргумент
+#    якої - ціле число в межах -max_N ... +max_N
+# 3. Замість списку використати словник як "сховище" для
+#    зберігання результатів
+
 max_N = 10
-
-# option 1
-# storage = []
-# for i in range(max_N+1):
-#     storage.append(None)
-
-# option 2
-storage = [None]*(max_N+1)
-
-
 def cacher(some_function):
+    storage = [None] * (max_N + 1)
     def cached_func(n):
         if storage[n] is None:
             res = some_function(n)
@@ -20,10 +19,17 @@ def cacher(some_function):
     #
     return cached_func
 
+
 @cacher  # original_func = cacher(original_func)
 def original_func(n):
     print("Hi, I'm original function, with n =", n)
     res = n**2
+    return res
+
+@cacher  # alternative_func = cacher(alternative_func)
+def alternative_func(n):
+    print("Hi, I'm alternative function, with n =", n)
+    res = -n
     return res
 
 
@@ -32,9 +38,5 @@ print(original_func(2))
 print('--------')
 print(original_func(3))
 print('--------')
-print(original_func(4))
-print('--------')
-print(original_func(2))
-print('--------')
-print(original_func(4))
+print(alternative_func(3))
 print('--------')

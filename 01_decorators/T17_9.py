@@ -13,22 +13,27 @@ def original_func(n):
     res = n**2
     return res
 
-def cached_func(n):
-    if storage[n] is None:
-        res = original_func(n)
-        storage[n] = res
-        return res
-    else:
-        return storage[n]
+def cacher(some_function):
+    def cached_func(n):
+        if storage[n] is None:
+            res = some_function(n)
+            storage[n] = res
+            return res
+        else:
+            return storage[n]
+    #
+    return cached_func
+
+smart_f = cacher(original_func) # !!!
 
 print('--------')
-print(cached_func(2))
+print(smart_f(2))
 print('--------')
-print(cached_func(3))
+print(smart_f(3))
 print('--------')
-print(cached_func(4))
+print(smart_f(4))
 print('--------')
-print(cached_func(2))
+print(smart_f(2))
 print('--------')
-print(cached_func(4))
+print(smart_f(4))
 print('--------')

@@ -6,12 +6,17 @@ class Circle:
 
     @property
     def area(self):
+        print('area is called')
         return math.pi * self._r ** 2
 
-    # @x.setter
-    # def x(self, value):
-    #     self._x = value
+    @area.setter
+    def area(self, value):
+        r = (value / math.pi)**0.5
+        print('new radius is', r)
+        self._r = r
 
 
 c = Circle(2.0)
-print(c.area)
+s = c.area
+print('s=', s)
+c.area = 12

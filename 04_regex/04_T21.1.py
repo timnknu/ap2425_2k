@@ -2,6 +2,8 @@ import re
 
 R_PATT_SL = r'(\d{4})/(\d{1,2})/(\d{1,2})'
 
+# '(\d{4})/(\d{1,2})/(\d{1,2})|(\d{1,2})\.(\d{1,2})\.(\d{4})'
+
 def myfunc(obj):
     print('THIS IS myfunc:', obj)
     print(obj.groups())

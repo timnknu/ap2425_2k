@@ -1,3 +1,3 @@
 import glob
 
-print(glob.glob('*.txt'))
+print(glob.glob('*notes*.txt'))

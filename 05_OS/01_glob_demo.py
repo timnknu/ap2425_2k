@@ -1,5 +1,6 @@
 import glob
 import os
+import datetime
 
 all_files = []
 
@@ -12,8 +13,14 @@ print(all_files)
 srt_list = sorted(all_files)
 print(srt_list)
 
+# із модуля datetime:
+# https://docs.python.org/3/library/datetime.html
+# datetime.datetime
+# datetime.timedelta
+
 for ctime, fname in srt_list:
-    print(ctime, fname)
+    dtm = datetime.datetime.fromtimestamp(ctime)
+    print(ctime, dtm, fname)
     with open(fname) as fi:
         txt = fi.read()
     print('-----')

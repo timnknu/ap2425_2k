@@ -1,7 +1,10 @@
 import glob
 import os
 
-print(sorted([10, -1, 2, -5, 20], reverse=True))
+all_files = []
 
 for fname in glob.glob('*.txt'):
-    print(fname, os.path.getctime(fname))
+    timestamp = os.path.getctime(fname)
+    d = (timestamp, fname)
+    all_files.append(d)
+print(all_files)

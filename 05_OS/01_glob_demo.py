@@ -9,6 +9,13 @@ for fname in glob.glob('*.txt'):
     all_files.append(d)
 print(all_files)
 
-print((1, 2) < (-2, 4))
-print((-2, 2) < (-2, 4))
-print('abc' < '0bd')
+srt_list = sorted(all_files)
+print(srt_list)
+
+for ctime, fname in srt_list:
+    print(ctime, fname)
+    with open(fname) as fi:
+        txt = fi.read()
+    print('-----')
+    print(txt)
+    print('-----')

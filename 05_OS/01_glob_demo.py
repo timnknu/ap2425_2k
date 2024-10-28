@@ -20,7 +20,8 @@ print(srt_list)
 
 for ctime, fname in srt_list:
     dtm = datetime.datetime.fromtimestamp(ctime)
-    print(ctime, dtm, fname)
+    s = dtm.strftime('time is %H:%M:%S, day is %a, date is %d/%m-%Y')
+    print(ctime, s, fname)
     with open(fname) as fi:
         txt = fi.read()
     print('-----')

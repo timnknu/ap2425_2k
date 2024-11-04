@@ -1,7 +1,7 @@
 import os
 import datetime
 import re
-
+import sys; print(sys.path)
 
 all_files = []
 

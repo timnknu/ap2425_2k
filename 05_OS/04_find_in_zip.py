@@ -1,7 +1,12 @@
 import zipfile
 import re
+import sys
+print(sys.argv)
 
-P = "import\s.*"
+P = sys.argv[1]
+#P = input() # and command line < redirect
+
+#P = "import\s.*"
 # Знайти файли, які містять тест,
 # що відповідає заданому регулярному виразу.
 #  Вивести імена знайдених файлів та

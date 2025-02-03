@@ -1,8 +1,8 @@
 import socket
 import threading
 
-HOST = '212.80.197.117'    # Комп'ютер для з'єднання з сервером
-#HOST='localhost'
+#HOST = '212.80.197.117'    # Комп'ютер для з'єднання з сервером
+HOST='localhost'
 PORT = 5555          # Порт для з'єднання з сервером
 
 def monitor_replies(sock):

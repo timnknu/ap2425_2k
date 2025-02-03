@@ -11,6 +11,10 @@ def work_with_client(conn, address):
     try:
         while True:
             data = conn.recv(1024)
+            if len(data) == 0: # якщо сервер помітив, що клієнт відключився, то видалити його зі "списку розсилки"
+                client_sockets.remove(conn)
+                break
+            # а іначе відправити повідомлення, отримане від клієнта, всім клієнтам:
             s = str(data, encoding='utf-8')
             print('I received:', s, 'from', address)
             if user_nickname is None:
@@ -21,6 +25,10 @@ def work_with_client(conn, address):
                 s = user_nickname + ' --> ' + s
                 for cs in client_sockets:
                     cs.sendall( bytes(s, encoding='utf-8') )
+        #
+        s = user_nickname + ' has left chat'
+        for cs in client_sockets:
+            cs.sendall(bytes(s, encoding='utf-8'))
     except socket.error as e:
         print(e)
 

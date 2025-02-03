@@ -39,7 +39,7 @@ try:
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  # Reuse port
 
     srv.bind( (HOST, PORT) )  # зв'язати з комп'ютером та портом
-    srv.listen(5)  # очікувати на з'єднання до 5 клієнтів одночасно
+    srv.listen(5)  # очікувати на з'єднання *до 5 клієнтів одночасно*
     print('=== Chat server ===')
 
     client_sockets = []

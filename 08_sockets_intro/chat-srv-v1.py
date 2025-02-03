@@ -14,7 +14,7 @@ def work_with_client(conn, address):
         while True:
             s = str(time.time()) + '\n'
             conn.sendall(s.encode())
-            time.sleep(2)
+            time.sleep(0.2)
     except socket.error as e:
         print(e)
 

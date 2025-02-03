@@ -1,11 +1,15 @@
 import socket
 import threading
 import tkinter as tk
+from tkinter import font
 
 #------------------------------------------------------------------------------------------------
 # Графічний інтерфейс:
 
 root = tk.Tk()
+
+for k in ['TkDefaultFont', 'TkTextFont', 'TkCaptionFont']: #'TkFixedFont', 'TkMenuFont', 'TkHeadingFont', 'TkSmallCaptionFont', 'TkIconFont'
+    tk.font.nametofont(k).configure(family='clean', size=20) # 'clearlyu'
 
 root.title("chat client")
 width=600
@@ -52,6 +56,7 @@ th.start()
 # функція для відправки повідомлення на сервер, яка викликається при натисканні кнопки
 def send_msg_to_server():
     s = myMessasaEntry.get()
+    s = s + '\n'
     print("send>>", s)
     sock.sendall(bytes(s, encoding='utf-8'))
 

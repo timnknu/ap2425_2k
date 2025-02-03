@@ -8,14 +8,15 @@ PORT = 5555  # Порт для з'єднання
 def work_with_client(conn, address):
     print('New thread created for', address)
     user_nickname = None
+    sinp = conn.makefile('rb', 0)  # створюємо файловий об'єкт для зчитування з сокету
     try:
         while True:
-            data = conn.recv(1024)
+            data = sinp.readline()
             if len(data) == 0: # якщо сервер помітив, що клієнт відключився, то видалити його зі "списку розсилки"
                 client_sockets.remove(conn)
                 break
             # а іначе відправити повідомлення, отримане від клієнта, всім клієнтам:
-            s = str(data, encoding='utf-8')
+            s = str(data, encoding='utf-8').rstrip()
             print('I received:', s, 'from', address)
             if user_nickname is None:
                 user_nickname = s

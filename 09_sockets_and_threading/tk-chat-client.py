@@ -36,7 +36,7 @@ msgsFromOthers.place(x=30,y=30,width=499,height=298)
 
 #HOST = '212.80.197.117'    # Комп'ютер для з'єднання з сервером
 HOST='localhost'
-PORT = 5555          # Порт для з'єднання з сервером
+PORT = 5556          # Порт для з'єднання з сервером
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # створити гніздо
 sock.connect((HOST, PORT)) # з'єднатися з сервером

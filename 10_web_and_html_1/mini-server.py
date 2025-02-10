@@ -7,12 +7,33 @@ PORT = 5556  # Порт для з'єднання
 
 def work_with_client(conn, address):
     print('New thread created for', address)
+    # sinp = conn.makefile('rb', 0)  # створюємо файловий об'єкт для зчитування з сокету
+    # request_lines = []
+    # while True:
+    #     data = sinp.readline()
+    #     if len(data) == 0:  # в HTTTP-запитах порожній рядок означає кінець запиту
+    #         break
+    #     request_lines.append( str(data, encoding='utf-8') )
+    s = ''
     while True:
         b = conn.recv(1)
-        if len(b) == 0:
+        s = s + str(b, encoding='utf-8')
+        if s.endswith('\r\n\r\n'):
             break
-        #print(b.decode('utf-8'), end='')
-        print(str(b, encoding='utf-8'), end='')
+    request_lines = s.split('\r\n')
+
+    print('Request lines', request_lines)
+    resp_str = "HTTP/1.1 200 OK\n"
+    resp_str = resp_str + "Content-Type: text/html\n"
+    resp_str = resp_str + "\n"
+    resp_str = resp_str + "Hello, world!\n\n"
+    resp_str = resp_str + "the first line of request was: " + request_lines[0] + "\n"
+    conn.sendall( bytes(resp_str, encoding='utf-8') )
+    conn.close()
+#
+
+
+
     #
 
 

@@ -3,7 +3,7 @@ import threading
 import time
 
 HOST = ''  # Комп'ютер для з'єднання
-PORT = 5555  # Порт для з'єднання
+PORT = 5556  # Порт для з'єднання
 
 def work_with_client(conn, address):
     print('New thread created for', address)

@@ -1,0 +1,123 @@
+<!DOCTYPE html> 
+<html>
+   <head>
+      <title>Приклади HTML</title>
+      <meta charset="UTF-8">
+   </head>
+   <body>
+      <h1>Приклади HTML</h1>
+      <p>Розглянемо основні елементи та концепції, необхідні для створення базових веб-сторінок.</p>
+      <h2>Структура документа</h2>
+      <p>Кожен HTML-документ починається з декларації <code>&lt;!DOCTYPE html&gt;</code>, за якою слідує корінний елемент <code>&lt;html&gt;</code>. Всередині елемента <code>&lt;html&gt;</code> ми маємо секції <code>&lt;head&gt;</code> та <code>&lt;body&gt;</code>.</p>
+      <h3>Секція Head</h3>
+      <p>Секція <code>&lt;head&gt;</code> містить метадані про веб-сторінку, такі як <code>&lt;title&gt;</code>, скрипти та стилі.</p>
+      <h3>Секція Body</h3>
+      <p>Секція <code>&lt;body&gt;</code> містить видимий вміст веб-сторінки.</p>
+      <h2>Форматування тексту</h2>
+      <p>HTML надає різні елементи для форматування тексту, такі як:</p>
+      <ul>
+         <li><b>Жирний:</b> <code>&lt;b&gt;Жирний Текст&lt;/b&gt;</code></li>
+         <li><i>Курсив:</i> <code>&lt;i&gt;Курсивний Текст&lt;/i&gt;</code></li>
+         <li><u>Підкреслений:</u> <code>&lt;u&gt;Підкреслений Текст&lt;/u&gt;</code></li>
+         <li><s>Перекреслений:</s> <code>&lt;s&gt;Перекреслений Текст&lt;/s&gt;</code></li>
+         <li><sup>Надрядковий</sup>: <code>&lt;sup&gt;Надрядковий Текст&lt;/sup&gt;</code></li>
+         <li><sub>Підрядковий</sub>: <code>&lt;sub&gt;Підрядковий Текст&lt;/sub&gt;</code></li>
+         <li><mark>Виділений текст</mark>: <code>&lt;mark&gt;Виділений Текст&lt;/mark&gt;</code></li>
+      </ul>
+      <h2>Заголовки</h2>
+      <p>HTML надає шість рівнів заголовків, від <code>&lt;h1&gt;</code> (найвищий) до <code>&lt;h6&gt;</code> (найнижчий).</p>
+      <h1>Заголовок 1</h1>
+      <h2>Заголовок 2</h2>
+      <h3>Заголовок 3</h3>
+      <h4>Заголовок 4</h4>
+      <h5>Заголовок 5</h5>
+      <h6>Заголовок 6</h6>
+      <h2>Абзаци</h2>
+      <p>Абзаци визначаються за допомогою елемента <code>&lt;p&gt;</code>.</p>
+      <p>Це абзац з <a href="#">посиланням</a>.</p>
+      <h2>Списки</h2>
+      <h3>Ненумеровані списки</h3>
+      <p>Ненумеровані списки створюються з елементом <code>&lt;ul&gt;</code>, а елементи списку визначаються за допомогою <code>&lt;li&gt;</code>.</p>
+      <ul>
+         <li>Елемент 1</li>
+         <li>
+            Елемент 2 
+            <ul>
+               <li>Вкладений елемент 1</li>
+               <li>Вкладений елемент 2</li>
+            </ul>
+         </li>
+         <li>Елемент 3</li>
+      </ul>
+      <h3>Нумеровані списки</h3>
+      <p>Нумеровані списки створюються з елементом <code>&lt;ol&gt;</code>, а елементи списку визначаються за допомогою <code>&lt;li&gt;</code>.</p>
+      <ol type="I">
+         <li>Крок 1</li>
+         <li>Крок 2</li>
+         <li>Крок 3</li>
+      </ol>
+      <h2>Таблиці</h2>
+      <p>Таблиці створюються з елементом <code>&lt;table&gt;</code>, рядки з <code>&lt;tr&gt;</code>, а комірки з <code>&lt;td&gt;</code>.</p>
+      <table border="1">
+         <thead>
+            <tr>
+               <th>Назва стовпця 1</th>
+               <th>Назва стовпця 2</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td rowspan="2">Комірка 1</td>
+               <td>Комірка 2</td>
+            </tr>
+            <tr>
+               <td>Комірка 3</td>
+            </tr>
+         </tbody>
+         <tfoot>
+            <tr>
+               <td colspan="2">Нижня комірка</td>
+            </tr>
+         </tfoot>
+      </table>
+      <h2>Зображення</h2>
+      <p>Зображення вставляються за допомогою елемента <code>&lt;img&gt;</code> та атрибута <code>src</code>.</p>
+      <img src="https://download.samplelib.com/png/sample-bumblebee-400x300.png" alt="Приклад зображення"> 
+      <h2>Посилання</h2>
+      <p>Посилання створюються з використанням елемента <code>&lt;a&gt;</code> (anchor) та атрибута <code>href</code>.</p>
+      <a href="https://mechmat.knu.ua/" target="_blank">Зовнішнє посилання</a> <br>
+	  <a href="https://www.mathwarehouse.com/animated-gifs/" target="_blank">Зовнішнє посилання з картинкою <img src="https://www.mathwarehouse.com/animated-gifs/images/area-of-circle-through-triangles-area-demo_xs.gif"></a> 	  
+	  
+      <h2>Семантичні елементи</h2>
+      <p>HTML надає семантичні елементи, які додають значення вмісту:</p>
+      <blockquote>
+         <p><code>&lt;blockquote&gt;</code>  - це елемент цитати, який часто використовується для цитат.</p>
+      </blockquote>
+      <p>Елемент <code>&lt;abbr&gt;</code> використовується для абревіатур, наприклад <abbr title="HyperText Markup Language">HTML</abbr>.</p>
+      <p>Елемент <code>&lt;dfn&gt;</code> використовується для визначень, наприклад <dfn>HTML</dfn>.</p>
+      <p>Елемент <code>&lt;cite&gt;</code> використовується для цитування джерел, наприклад <cite>Мистецтво веб-дизайну</cite>.</p>
+      <h2>Додаткові елементи</h2>
+      <p>Ось деякі інші елементи, з якими ви можете зустрітися:</p>
+      <ul>
+         <li><code>&lt;div&gt;</code> та <code>&lt;span&gt;</code> для групування елементів</li>
+         <li><code>&lt;pre&gt;</code> для попередньо форматованого тексту</li>
+         <li><code>&lt;code&gt;</code> для вставки коду</li>
+         <li><code>&lt;hr&gt;</code> для горизонтальних ліній</li>
+         <li><code>&lt;br&gt;</code> для розривів рядків</li>
+         <li>HTML-коментарі: <code>&lt;!-- Це коментар --&gt;</code></li>
+      </ul>
+      <h2>Форми</h2>
+      <p>HTML-форми створюються з елементом <code>&lt;form&gt;</code> та різними елементами введення, такими як:</p>
+      <form> <label for="name">Ім'я:</label> <input type="text" id="name" name="name"><br> <label for="email">Електронна пошта:</label> <input type="email" id="email" name="email"><br> <input type="submit" value="Надіслати"> </form>
+      <h2>Мультимедіа</h2>
+      <p>HTML підтримує вбудовування мультимедійного вмісту, такого як відео та аудіо:</p>
+      <video width="320" height="240" controls>
+         <source src="https://onlinetestcase.com/wp-content/uploads/2023/06/2MB.mp4" type="video/mp4">
+         Ваш браузер не підтримує тег відео. 
+      </video>
+      <p>Ми розглянули лише основні елементи та концепції HTML, необхідні для створення базових веб-сторінок.
+	  Продовжуйте досліджувати та практикуватися, щоб покращити свої навички з HTML!</p>
+	  <p>Корисні посилання:
+	  <a href="https://css.in.ua/html/tags">1</a> , <a href="https://itwiki.dev/front-end/html-reference/tags/a">2</a></p>
+   </body>
+</html>

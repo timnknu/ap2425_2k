@@ -46,12 +46,9 @@ try:
     srv.listen(5)  # очікувати на з'єднання *до 5 клієнтів одночасно*
     print('=== Chat server ===')
 
-    client_sockets = []
-
     while True:
         print('** waiting for connection **')
         conn, address = srv.accept()
-        client_sockets.append(conn)
         th = threading.Thread(target=work_with_client, args=(conn, address))
         th.start()
 

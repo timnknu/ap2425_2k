@@ -15,18 +15,24 @@ class RequestHandler(socketserver.StreamRequestHandler):
         #
         print('Request lines', request_lines)
 
-        resp_str = "HTTP/1.1 200 OK\n"
-        resp_str = resp_str + "Content-Type: text/html\n"
-        resp_str = resp_str + "\n"
-        resp_str = resp_str + "Hello, world!\n\n"
-        resp_str = resp_str + "the first line of request was: " + request_lines[0] + "\n"
-        #self.wfile.write(resp_str.encode('utf-8'))
-        self.wfile.write(bytes(resp_str, encoding='utf-8'))
+        method, pth, proto = request_lines[0].split()
+        if pth == '/':
+            resp_str = "HTTP/1.1 200 OK\n"
+            resp_str = resp_str + "Content-Type: text/html\n"
+            resp_str = resp_str + "\n"
+            resp_str = resp_str + "This is main page!\n\n"
+            self.wfile.write(bytes(resp_str, encoding='utf-8')) # перетворити рядок у байти та відправити клієнту (або можна було так: self.wfile.write(resp_str.encode('utf-8')) )
+        elif pth == '/about':
+            resp_str = "HTTP/1.1 200 OK\n"
+            resp_str = resp_str + "Content-Type: text/plain\n"
+            resp_str = resp_str + "\n"
+            resp_str = resp_str + "This is a second piece of information, and it is not an HTML\n\n"
+            self.wfile.write(bytes(resp_str, encoding='utf-8'))
 
 #--------------------------------------------------------------------
 # Блок 3
 HOST = ''                 # Комп'ютер для з'єднання
-PORT = 5557              # Порт для з'єднання
+PORT = 5556              # Порт для з'єднання
 
 srv = socketserver.ThreadingTCPServer((HOST, PORT), RequestHandler)
 socketserver.ThreadingTCPServer.allow_reuse_address = True

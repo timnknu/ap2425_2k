@@ -1,38 +1,6 @@
 import wsgiref.simple_server
 import traceback
-
-import openpyxl
-
-def read_rates():
-    rates = {}
-    wb = openpyxl.load_workbook('rates-example.xlsx')
-    ws = wb.worksheets[0]
-    for r in ws.iter_rows(values_only=True):
-        ccode1, ccode2, rate = r
-        key = (ccode1, ccode2)
-        rates[key] = rate
-    return rates
-#-----------------------------------------
-
-
-
-
-# Блок 1
-def application(environ, start_response):
-    http_status = '200 OK'
-    resp_headers = [
-        ('Content-Type', 'text/html')
-    ]
-    start_response(http_status, resp_headers)
-
-    s = str(environ)
-    resp_str = f'<html><body><h1>It works</h1><br>{s}</body></html>'
-    resp_bytes = bytes(resp_str, encoding='utf-8')
-    return [resp_bytes]
-
-
-
-
+from app_logic import application
 
 #--------------------------------------------------------------------
 # Блок 2

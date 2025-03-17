@@ -19,7 +19,20 @@ def read_rates():
 
 # Блок 1
 def application(environ, start_response):
-    pass
+    http_status = '200 OK'
+    resp_headers = [
+        ('Content-Type', 'text/html')
+    ]
+    start_response(http_status, resp_headers)
+
+    s = str(environ)
+    resp_str = f'<html><body><h1>It works</h1><br>{s}</body></html>'
+    resp_bytes = bytes(resp_str, encoding='utf-8')
+    return [resp_bytes]
+
+
+
+
 
 #--------------------------------------------------------------------
 # Блок 2

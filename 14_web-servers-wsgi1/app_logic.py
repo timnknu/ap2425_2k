@@ -12,6 +12,14 @@ def read_rates():
     return rates
 #-----------------------------------------
 
+d = read_rates()
+# d == {('UAH', 'EUR'): 0.0236, ('EUR', 'UAH'): 44.2, ('UAH', 'USD'): 0.025, ('USD', 'UAH'): 42.2}
+test_to_insert = ""
+for k,v in d.items():
+    print(f'<option value="{v}">{k[0]} - {k[1]}</option>\n')
+# test_to_insert = """<option value="1.25">UAH-EUR</option>
+#       <option value="0.85">EUR-UAH</option>"""
+
 
 # Блок 1
 def application(environ, start_response):

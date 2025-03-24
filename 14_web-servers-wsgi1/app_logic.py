@@ -36,10 +36,13 @@ def application(environ, start_response):
     if environ['PATH_INFO'] == '/show-result':
         req = environ['QUERY_STRING']
         form_data = urllib.parse.parse_qs(req)
-        values_list = form_data['amount']
-        x = float(values_list[0])
-        s = str(x*2)
-        resp_str = f'<html><body><h1>x*2={s}</h1></body></html>'
+        amount_list = form_data['amount']
+        rates_list = form_data['rate']
+        try:
+            result = float(amount_list[0]) * float(rates_list[0])
+            resp_str = f'<html><body><h1>x*2={result}</h1></body></html>'
+        except:
+            resp_str = f'<html><body>Сталася помилка :(</body></html>'
         resp_bytes = bytes(resp_str, encoding='utf-8')
         return [resp_bytes]
     else:

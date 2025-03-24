@@ -40,9 +40,14 @@ def application(environ, start_response):
         rates_list = form_data['rate']
         try:
             result = float(amount_list[0]) * float(rates_list[0])
-            resp_str = f'<html><body><h1>x*2={result}</h1></body></html>'
+            #text_to_insert = str(result)
+            text_to_insert = f'{result:.2f}'
         except:
-            resp_str = f'<html><body>Сталася помилка :(</body></html>'
+            text_to_insert = 'Сталася помилка :('
+        #
+        with open('response.html', 'r', encoding='utf8') as f:
+            s = f.read()
+        resp_str = s.format(result_field = text_to_insert)
         resp_bytes = bytes(resp_str, encoding='utf-8')
         return [resp_bytes]
     else:

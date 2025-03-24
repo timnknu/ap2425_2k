@@ -12,15 +12,6 @@ def read_rates():
     return rates
 #-----------------------------------------
 
-d = read_rates()
-# d == {('UAH', 'EUR'): 0.0236, ('EUR', 'UAH'): 44.2, ('UAH', 'USD'): 0.025, ('USD', 'UAH'): 42.2}
-test_to_insert = ""
-for k,v in d.items():
-    print(f'<option value="{v}">{k[0]} - {k[1]}</option>\n')
-# test_to_insert = """<option value="1.25">UAH-EUR</option>
-#       <option value="0.85">EUR-UAH</option>"""
-
-
 # Блок 1
 def application(environ, start_response):
     http_status = '200 OK'
@@ -32,8 +23,12 @@ def application(environ, start_response):
     if environ['PATH_INFO'] == '/':
         with open('main-page.html', 'r', encoding='utf8') as f:
             s = f.read()
-        test_to_insert = """<option value="1.25">UAH-EUR</option>
-              <option value="0.85">EUR-UAH</option>"""
+        # Формуємо фрагмент для підстановки в "шаблон" головної html-сторінки зі словника, який повертає read_rates()
+        d = read_rates()
+        test_to_insert = ""
+        for k, v in d.items():
+            test_to_insert += f'<option value="{v}">{k[0]} - {k[1]}</option>\n'
+        #
         resp_str = s.format(rate_info = test_to_insert)
         #resp_bytes = resp_str.encode()
         resp_bytes = bytes(resp_str, encoding='utf8')

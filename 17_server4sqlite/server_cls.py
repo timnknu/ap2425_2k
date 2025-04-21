@@ -15,7 +15,7 @@ class WebInputEnvironmentServer:
         try:
             cont_len_str = environ.get('CONTENT_LENGTH', '')
             if len(cont_len_str)>0:
-                data_length = int()
+                data_length = int(cont_len_str)
                 f = environ['wsgi.input']
                 post_data_str = f.read(data_length)
                 post_data_dict = urllib.parse.parse_qs(post_data_str)

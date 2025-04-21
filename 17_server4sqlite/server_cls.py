@@ -1,8 +1,14 @@
 import wsgiref.simple_server
 import traceback
 import urllib
+from user_sessions import BaseHandler
 
 class WebInputEnvironmentServer:
+    def __init__(self, handler_class):
+        self.sessions = {}
+        self.last_user_index = 0
+        self.HandlerClass = handler_class
+
     def application(self, environ, start_response):
         http_status = '200 OK'
         resp_headers = [
@@ -23,14 +29,28 @@ class WebInputEnvironmentServer:
         except:
             print(traceback.format_exc())
         #
-        resp_str = str(form_data)
 
         if environ['PATH_INFO'] == '/':
             # коли запит був на "головну сторінку"
-            pass
+            # Значить - це новий користувач
+            self.last_user_index += 1
+            uid = self.last_user_index
+            self.sessions[uid] = self.HandlerClass(uid)
+            resp_str = self.sessions[uid].handle(environ, form_data)
         else:
             # коли запит був від користувача, який уже починав взаємодіяти з цим сервером
-            pass
+            # Значить - це новий користувач, якого "ми вже бачили"
+            addr_parts = environ['PATH_INFO'].split('/')
+            try:
+                uid = int(addr_parts[1])
+            except:
+                uid = None
+            if uid in self.sessions:
+                # це дійсно коректний ідентифікатор користувача
+                resp_str = self.sessions[uid].handle(environ, form_data)
+            else:
+                resp_str = "Невідомий користувач"
+        #
         resp_bytes = bytes(resp_str, encoding='utf-8')
         return [resp_bytes]
 
@@ -58,5 +78,6 @@ class WebInputEnvironmentServer:
 
 
 if __name__ == "__main__":
-    s = WebInputEnvironmentServer()
+    req_handler_class = BaseHandler
+    s = WebInputEnvironmentServer(req_handler_class)
     s.run()

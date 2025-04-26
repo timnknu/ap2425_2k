@@ -1,0 +1,78 @@
+-- на прикладі файлу 2.db (який є у google-чаті)
+
+SELECT books.title, authors.name, genres.name, books.year, publishers.name
+FROM books 
+JOIN authors ON books.author_id = authors.id
+JOIN genres ON books.genre_id = genres.id
+JOIN publishers ON books.publisher_id=publishers.id
+;
+
+
+
+SELECT books.title, authors.name AS Aname, genres.name as Gname, books.year, publishers.name
+FROM books 
+JOIN authors ON books.author_id = authors.id
+JOIN genres ON books.genre_id = genres.id
+JOIN publishers ON books.publisher_id=publishers.id
+;
+
+SELECT *, rowid FROM books;
+
+
+UPDATE books SET id = rowid + 1000 WHERE year > 1900;
+
+
+UPDATE books SET id = rowid + 10;
+
+
+INSERT INTO ABlinks (author_id, book_id)
+SELECT authors.id, books.id
+FROM books 
+JOIN authors ON books.author_id = authors.id;
+
+
+SELECT books.title, authors.name, genres.name, books.year, publishers.name
+FROM books 
+JOIN ABlinks ON books.id = ABlinks.book_id
+JOIN authors ON ABlinks.author_id = authors.id
+JOIN genres ON books.genre_id = genres.id
+JOIN publishers ON books.publisher_id=publishers.id
+;
+
+
+SELECT books.title, authors.name, genres.name, books.year, publishers.name, COUNT(*), 
+group_concat(authors.name, '; '), group_concat(books.title)
+FROM books 
+JOIN ABlinks ON books.id = ABlinks.book_id
+JOIN authors ON ABlinks.author_id = authors.id
+JOIN genres ON books.genre_id = genres.id
+JOIN publishers ON books.publisher_id=publishers.id
+GROUP BY books.id
+;
+
+
+
+SELECT books.title, 
+	group_concat(authors.name, '; ') AS authrs,
+	publishers.name, books.year, genres.name, 
+	COUNT(*) as num_authors
+FROM books 
+JOIN ABlinks ON books.id = ABlinks.book_id
+JOIN authors ON ABlinks.author_id = authors.id
+JOIN genres ON books.genre_id = genres.id
+JOIN publishers ON books.publisher_id=publishers.id
+GROUP BY books.id
+;
+
+
+SELECT books.title || ' : ' ||
+	group_concat(authors.name, ', ') AS entry,
+	publishers.name, books.year, genres.name, 
+	COUNT(*) as num_authors
+FROM books 
+JOIN ABlinks ON books.id = ABlinks.book_id
+JOIN authors ON ABlinks.author_id = authors.id
+JOIN genres ON books.genre_id = genres.id
+JOIN publishers ON books.publisher_id=publishers.id
+GROUP BY books.id
+;

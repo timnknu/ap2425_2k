@@ -1,25 +1,90 @@
 import queue
 import threading
+import traceback
 
 class BaseHandler:
     def __init__(self, uid):
+        # Зберігаємо ідентифікатор користувача, адже він буде використовуватись для формування URL-адрес:
         self.uid = uid
+        # Черги для обміну даними між браузером і програмою:
         self.q_browser_to_program = queue.Queue()
         self.q_program_to_browser = queue.Queue()
-        th = threading.Thread(target = self.thread_fn, daemon=True)
+        # Створюємо окремий потік, в якому буде виконуватись основна програма-обробник запитів данного користувача:
+        th = threading.Thread(target = self._thread_fn, daemon=True)
         th.start()
 
-    def thread_fn(self):
-        k = 0
-        while True:
-            print('loop started')
-            e, d = self.q_browser_to_program.get()
-            print(e, d)
-            self.q_program_to_browser.put(str(k) + f' userId={self.uid} ' + str(d))
-            print('put made')
-            k += 1
-
+    # Метод, який викликається із основного потоку програми-сервера, коли браузер надсилає запит (наприклад, дані форми)
     def handle(self, environ, form_data):
-        self.q_browser_to_program.put( (environ, form_data) )
+        if environ['PATH_INFO'] != '/':
+            # Якщо користувач щойно зайшов на сайт (в URL-адресі буде не /<uid>, а просто / ), то у нас ще немає
+            # даних, які могла би повернути основній програмі функція remote_input(). Відповідно, ми не
+            # зберігаємо дані цього запиту в черзі q_browser_to_program
+            self.q_browser_to_program.put( (environ, form_data) )
+        # Натомість, навіть якщо користувач зайшов на сайт вперше, ми все ж таки можемо повернути йому сторінку "привітання",
+        # яка фактично отримана із першого звернення основної програми у метод main() до функції remote_input()
+        # (і для усіх наступних запитів логіка дій є такою ж: брати дані для надсилання броузеру із аргументів функції remote_input()
+        # через чергу q_browser_to_program)
         resp = self.q_program_to_browser.get()
         return resp
+
+
+    # Основний метод, який імітує роботу вбудованї функції input(), але яка (з точки зору основної програми)
+    # чекає на введення даних не з клавіатури, а шляхом отримання даних форми, які будуть надіслані браузером
+    # у наступному запиті
+    def remote_input(self, prompt):
+        self.q_program_to_browser.put((*prompt, False)) # Відправляємо отриманий аргумент у чергу q_program_to_browser
+        resp = self.q_browser_to_program.get() # Чекаємо на відповідь, яку браузер надішле (у наступному запиті до сервера) коли користувач заповнить форму
+        return resp
+
+    # Метод, який викликається в окремому потоці і запускає основну програму-обробник запитів
+    def _thread_fn(self):
+        # Викликаємо метод main() - основний метод програми-обробника запитів
+        try:
+            final_page = self.main()
+        except Exception as e:
+            # Якщо сталася помилка, то показуємо її як в броузері, так і в консолі - для зручності налагодження
+            # (в реальному житті тут потрібно обробляти помилки більш коректно!!!)
+            error_msg = traceback.format_exc()
+            final_page = self.plain_text(error_msg)
+            print(error_msg)
+
+        # Коли основна програма завершила свою роботу, то відправляємо браузеру останню сторінку (self.main() має повернути
+        # її через return, коли "сеанс" користувача завершений, і залишається показати лише "підсумкову" сторінку):
+        self.q_program_to_browser.put( (*final_page, True) )
+
+    # Метод, який має бути реалізований в класі-нащадку і містити основну логіку програми (обробку "сеансу" користувача):
+    # Передбачається, що цей метод викликатиме метод remote_input() та/або "допоміжні" методи fmt_html_page()
+    # та plain_text для формування HTML-сторінок.
+    # В кінці своєї роботи (коли "сеанс" користувача завершений), цей метод має повернути кортеж (resp_str, resp_headers), який
+    # буде відправлено браузеру як відповідь на запит (викликом методу q_program_to_browser.put()). Його зручно сформувати
+    # одним із допоміжних методів: fmt_html_page() або plain_text()
+    def main(self):
+        raise NotImplementedError("Потрібно реалізувати метод main() в класі-нащадку")
+
+    # -----------------------------------------------------------------
+
+    # Кілька допоміжних методів, які можуть бути використані в класах-нащадках (наприклад, викликані із main())
+
+    # Метод для формування HTML-сторінки на основі вмісту файлу-шаблону або вмісту, переданого в параметрах як текстовий рядок:
+    def fmt_html_page(self, fnm, inline=False, **kwargs):
+        if not inline:
+            # Якщо файл в параметрах передано ім'я файлу
+            with open(fnm, 'r') as f:
+                content = f.read()
+        else:
+            # Якщо файл в параметрах передано не ім'я файлу, а його вміст
+            content = fnm
+        default_headers = [
+            ('Content-Type', 'text/html; charset=utf-8')
+        ]
+        # Формуючи відповідь для відправки браузеру, викликаємо .format для "заповнення полів" в шаблоні HTML-сторінки
+        # та додаємо заголовок Content-Type (рівний text/html)
+        return content.format(self=self, **kwargs), default_headers
+
+    # Метод для формування суто-текстової відповіді:
+    def plain_text(self, s):
+        text_headers = [
+            ('Content-Type', 'text/plain; charset=utf-8')
+        ]
+        return s, text_headers
+

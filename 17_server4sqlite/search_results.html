@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <i>Кориснувач {self.uid}, пошук № {self.nsteps})</i>
+    <br>
+    <h2>Результати пошуку:</h2>
+    (За запитом: {req_descr})
+    <br>
+    <ol>
+        {html_search_results}
+    </ol>
+    Загалом знайдено {res_count} результатів.
+    <br>
+    Шукати ще раз?
+    <br>
+    <!-- Використовуємо таблицю для вирівнювання кнопок (обидві форми можна було просто вставити підряд, але тоді кнопки не вирівнювались би) -->
+    <table>
+        <tr>
+            <td>
+                <form action="/{self.uid}/search" method="post">
+                    <input type="hidden" name="again" value="1">
+                    <input type="submit" value="Так">
+                </form>
+            </td>
+            <td>
+                <form action="/{self.uid}/search" method="post">
+                    <input type="hidden" name="again" value="0">
+                    <input type="submit" value="Ні">
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

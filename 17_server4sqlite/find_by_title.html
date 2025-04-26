@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <small>Кориснувач {self.uid}, пошук № {self.nsteps})</small>
+    <h1>
+        Пошук книг за частиною назви
+    </h1>
+    Якщо залишити поле порожнім, то буде виведено всі книги.
+
+    <form action="/{self.uid}/search" method="post">
+        <label for="title">Частина назви книги:</label>
+        <input type="text" id="title" name="title">
+        <input type="submit" value="Шукати">
+    </form>
+</body>
+</html>

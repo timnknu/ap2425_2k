@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Hello, кориснувач {self.uid}</h1>
+    <small>(пошук № {self.nsteps})</small>
+    <br>
+    Цей сайт дозволяє шукати книги за частиною назви або за роком видання.
+    <form action="/{self.uid}/search" method="post">
+        <input type="radio" name="search_type" value="title" id="r1" checked>
+        <label for="r1">Шукати за частиною назви книги</label>
+        <br>
+        <input type="radio" name="search_type" value="year" id="r2">
+        <label for="r2">Шукати за роком видання</label>
+        <br>
+        <input type="submit" value="Шукати">
+    </form>
+</body>
+</html>

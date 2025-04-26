@@ -1,7 +1,6 @@
 import wsgiref.simple_server
 import traceback
 import urllib
-from user_sessions import BaseHandler
 
 class WebInputEnvironmentServer:
     def __init__(self, handler_class):
@@ -14,7 +13,6 @@ class WebInputEnvironmentServer:
         resp_headers = [
             ('Content-Type', 'text/html')
         ]
-        start_response(http_status, resp_headers)
 
         req = environ['QUERY_STRING']
         form_data = urllib.parse.parse_qs(req)
@@ -23,7 +21,7 @@ class WebInputEnvironmentServer:
             if len(cont_len_str)>0:
                 data_length = int(cont_len_str)
                 f = environ['wsgi.input']
-                post_data_str = f.read(data_length)
+                post_data_str = f.read(data_length).decode('utf-8')
                 post_data_dict = urllib.parse.parse_qs(post_data_str)
                 form_data.update(post_data_dict)
         except:
@@ -36,7 +34,6 @@ class WebInputEnvironmentServer:
             self.last_user_index += 1
             uid = self.last_user_index
             self.sessions[uid] = self.HandlerClass(uid)
-            resp_str = self.sessions[uid].handle(environ, form_data)
         else:
             # коли запит був від користувача, який уже починав взаємодіяти з цим сервером
             # Значить - це новий користувач, якого "ми вже бачили"
@@ -45,12 +42,20 @@ class WebInputEnvironmentServer:
                 uid = int(addr_parts[1])
             except:
                 uid = None
-            if uid in self.sessions:
-                # це дійсно коректний ідентифікатор користувача
-                resp_str = self.sessions[uid].handle(environ, form_data)
-            else:
-                resp_str = "Невідомий користувач"
+        if uid in self.sessions:
+            # це дійсно коректний ідентифікатор користувача
+            resp_str, resp_headers, is_final = self.sessions[uid].handle(environ, form_data)
+            if is_final:
+                # якщо це остання відповідь, то видалимо сесію
+                del self.sessions[uid]
+        else:
+            resp_headers = [
+                ('Content-Type', 'text/plain; charset=utf-8'),
+            ]
+            resp_str = "ПОМИЛКА: Невідомий користувач"
         #
+        start_response(http_status, resp_headers)
+
         resp_bytes = bytes(resp_str, encoding='utf-8')
         return [resp_bytes]
 
@@ -78,6 +83,7 @@ class WebInputEnvironmentServer:
 
 
 if __name__ == "__main__":
+    from user_sessions import BaseHandler
     req_handler_class = BaseHandler
     s = WebInputEnvironmentServer(req_handler_class)
     s.run()

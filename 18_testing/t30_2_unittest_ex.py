@@ -1,12 +1,12 @@
 def t302_matrix_process(M):
     "Ця функція приймає M -- матрицю як список списків"
     sum_elements = 0
-    min_elem = 0
+    min_elem = None
     max_elem = 0
     for row in M:
         for el in row:
             sum_elements += el
-            if el < min_elem:
+            if min_elem is None or el < min_elem:
                 min_elem = el
             if el > max_elem:
                 max_elem = el

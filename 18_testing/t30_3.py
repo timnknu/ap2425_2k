@@ -7,8 +7,20 @@ def Hamming_dist(s1, s2):
     >>> Hamming_dist('hello', 'world')
     4
 
+    >>> Hamming_dist('hello', 'w orld')
+    6
+
     >>> Hamming_dist('hello', 'world123')
     7
+
+    >>> Hamming_dist('world123', 'hello')
+    7
+
+    >>> Hamming_dist('', 'hello')
+    5
+
+    >>> Hamming_dist('', '')
+    0
 
     """
     num_different = 0
